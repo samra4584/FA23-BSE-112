@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Technologies · CSC336 Assignment</title>
+  <style>
+    /* ---------- global reset & base ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ebf3f8;
+      font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+      line-height: 1.5;
+      color: #102b3f;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* main container – matches sample output clean card */
+    .main-site {
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 2.5rem;
+      box-shadow: 0 25px 45px -18px #1b3f5c;
+      overflow: hidden;
+      padding: 2.2rem 2.5rem 2.8rem 2.5rem;
+      border: 1px solid #d4e3f0;
+    }
+
+    /* header line: now only the main heading – all rights box removed */
+    .header-row {
+      border-bottom: 3px double #b6d3e9;
+      padding-bottom: 0.7rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-row h1 {
+      font-weight: 600;
+      font-size: 2.4rem;
+      background: linear-gradient(150deg, #10324b, #225577);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    /* student info card (name + reg) – only these two fields now */
+    .student-meta {
+      background: #e5f0fb;
+      border-radius: 50px;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      align-items: center;
+      border: 1px solid #c3dcf2;
+      box-shadow: inset 0 1px 4px white, 0 8px 12px -14px #123e58;
+    }
+
+    .student-meta .field {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.2rem;
+    }
+
+    .student-meta .field .tag {
+      background: white;
+      border-radius: 60px;
+      padding: 0.2rem 1rem;
+      font-weight: 500;
+      color: #0f3c57;
+      border: 1px solid #a7c9e4;
+    }
+
+    .student-meta .field .value {
+      font-weight: 600;
+      background: #ffffffea;
+      border-radius: 60px;
+      padding: 0.2rem 1.4rem;
+      box-shadow: 0 2px 6px #b8d1e5;
+    }
+
+    /* main table – exactly 8 lectures with video links (hyperlinks) */
+    .lecture-grid {
+      margin: 1.8rem 0 2.8rem;
+    }
+
+    .lecture-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+    }
+
+    .lecture-table th {
+      text-align: left;
+      padding: 0.8rem 1.2rem 0.8rem 1.8rem;
+      background: #cde3f5;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #03273b;
+      border-radius: 40px 40px 12px 12px;
+    }
+
+    .lecture-table td {
+      background: #f5faff;
+      padding: 1.1rem 1.2rem 1.1rem 1.8rem;
+      border-radius: 30px;
+      box-shadow: 0 6px 14px #d7e5f3;
+      border: 1px solid white;
+      transition: 0.15s;
+      font-size: 1.05rem;
+    }
+
+    .lecture-table tr:hover td {
+      background: #ffffff;
+      box-shadow: 0 8px 18px #c2d5e9;
+      border-color: #aec9e4;
+    }
+
+    .lecture-table a.video-link {
+      text-decoration: none;
+      background: #124f74;
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 1.5rem;
+      border-radius: 60px;
+      display: inline-block;
+      transition: 0.15s;
+      border: 1px solid #3778a2;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 6px #accae7;
+    }
+
+    .lecture-table a.video-link:hover {
+      background: #1e6b99;
+      border-color: #78b1d8;
+    }
+
+    /* navigation footer between lectures (home / next lecture / previous) */
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      margin: 2rem 0 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      background: #e1effa;
+      padding: 0.5rem 2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #124f74;
+      text-decoration: none;
+      border: 1px solid #9ac2e2;
+      transition: 0.15s;
+    }
+
+    .nav-links a:hover {
+      background: #d2e6fc;
+      border-color: #588bb3;
+    }
+
+    /* ----- lecture summary pages (separate pages via fragments) ----- */
+    .summary-section {
+      margin-top: 2.5rem;
+      background: #e9f3fd;
+      border-radius: 48px;
+      padding: 2rem 2.2rem;
+      border: 2px solid #c0ddf5;
+      display: none; /* hidden by default, shown when targeted */
+    }
+
+    .summary-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #9ec0de;
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .summary-header h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      color: #0d364f;
+    }
+
+    .summary-header a.home-btn {
+      background: #15475f;
+      color: white;
+      padding: 0.4rem 1.6rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .summary-header a.home-btn:hover {
+      background: #286482;
+    }
+
+    .summary-card {
+      background: #ffffffde;
+      border-radius: 40px;
+      padding: 1.8rem 2rem;
+      border: 1px solid #add0ed;
+      box-shadow: 0 12px 20px -24px #1c3a4e;
+    }
+
+    .summary-card h3 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #15455e;
+      margin-bottom: 0.8rem;
+      border-left: 6px solid #22668b;
+      padding-left: 1rem;
+    }
+
+    .summary-card p {
+      margin: 1rem 0;
+      font-size: 1.1rem;
+    }
+
+    .topics-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .topics-list span {
+      background: #d7e9fa;
+      padding: 0.3rem 1.2rem;
+      border-radius: 30px;
+      font-weight: 450;
+      border: 1px solid #9dbedb;
+    }
+
+    .example-links a {
+      background: #21638b;
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .example-links a:hover {
+      background: #3980ad;
+    }
+
+    /* separate pages: :target shows the selected summary */
+    #lecture1:target, #lecture2:target, #lecture3:target, #lecture4:target,
+    #lecture5:target, #lecture6:target, #lecture7:target, #lecture8:target {
+      display: block;
+      animation: fade 0.25s ease;
+    }
+
+    @keyframes fade { 0% { opacity:0.3; } 100% { opacity:1; } }
+  </style>
+</head>
+<body>
+<div class="main-site">
+  <!-- header line: only the main heading "Web Technologies" – all rights box removed as requested -->
+  <div class="header-row">
+    <h1>Web Technologies</h1>
+  </div>
+
+  <!-- Name and Registration number (homepage) - Bushra Ahmad & FA23-BSE-112 -->
+  <div class="student-meta">
+    <div class="field"><span class="tag">Name</span><span class="value">Bushra Ahmad</span></div>
+    <div class="field"><span class="tag">Reg. No</span><span class="value">FA23-BSE-112</span></div>
+  </div>
+
+  <!-- 8‑lecture table exactly from sample (Lecture No, Title, Link) with hyperlinks -->
+  <div class="lecture-grid">
+    <table class="lecture-table">
+      <thead>
+        <tr><th>Lecture No</th><th>Lecture Title</th><th>Link</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Lecture 1</td><td>Introduction to Web Technologies</td><td><a class="video-link" href="#lecture1">[Video]</a></td></tr>
+        <tr><td>Lecture 2</td><td>HTML Basics</td><td><a class="video-link" href="#lecture2">[Video]</a></td></tr>
+        <tr><td>Lecture 3</td><td>HTML Forms and Media</td><td><a class="video-link" href="#lecture3">[Video]</a></td></tr>
+        <tr><td>Lecture 4</td><td>Introduction to CSS</td><td><a class="video-link" href="#lecture4">[Video]</a></td></tr>
+        <tr><td>Lecture 5</td><td>CSS Selectors</td><td><a class="video-link" href="#lecture5">[Video]</a></td></tr>
+        <tr><td>Lecture 6</td><td>CSS Box Model & Layout</td><td><a class="video-link" href="#lecture6">[Video]</a></td></tr>
+        <tr><td>Lecture 7</td><td>Responsive Web Design</td><td><a class="video-link" href="#lecture7">[Video]</a></td></tr>
+        <tr><td>Lecture 8</td><td>Introduction to JavaScript</td><td><a class="video-link" href="#lecture8">[Video]</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- navigation: Home / Next Lecture / Previous -->
+  <div class="nav-links">
+    <a href="#">🏠 Home</a>
+    <a href="#lecture2">Next Lecture →</a>
+    <a href="#lecture7">← Previous</a>
+  </div>
+
+  <!-- ========== LECTURE SUMMARY PAGES (8 separate) ========== -->
+  <!-- lecture 1 summary -->
+  <div id="lecture1" class="summary-section">
+    <div class="summary-header">
+      <h2>📘 Lecture 1: Introduction to Web Technologies</h2>
+      <a class="home-btn" href="#">Home</a>
+    </div>
+    <div class="summary-card">
+      <h3>Overview of web technologies and core concepts</h3>
+      <p><strong>Summary</strong> — This lecture covers the basics of the Internet, web browsers, web servers, and core technologies like HTML, CSS, and JavaScript.</p>
+      <div><strong>Topics Covered:</strong></div>
+      <div class="topics-list">
+        <span>Introduction to Web Technologies</span><span>Internet Basics</span><span>What Is The Internet?</span>
+        <span>World Wide Web</span><span>Web Components</span><span>Web Browsers</span>
+        <span>Client-Server Model</span><span>Common Technologies</span><span>APIs</span>
+        <span>Security</span><span>Programming</span>
+      </div>
+      <div><strong>Examples:</strong> </div>
+      <div class="example-links">
+        <a href="https://www.w3schools.com/html/" target="_blank">HTML</a>
+        <a href="https://www.w3schools.com/css/" target="_blank">CSS</a>
+        <a href="https://www.w3schools.com/js/" target="_blank">JavaScript</a>
+      </div>
+      <p style="margin-top: 1.5rem; background: #eef3fd; padding: 0.8rem; border-radius: 30px;">✨ <strong>Welcome to Web Technologies</strong> — This is a simple HTML example.</p>
+    </div>
+  </div>
+
+  <!-- lecture 2 summary -->
+  <div id="lecture2" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 2: HTML Basics</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>HTML foundations — elements, tags, attributes</h3>
+      <p><strong>Summary</strong> — Explored basic HTML tags: headings, paragraphs, lists, links, images. Discussed document structure and nesting.</p>
+      <div><strong>Topics Covered:</strong> </div>
+      <div class="topics-list"><span>Elements</span><span>Attributes</span><span>Headings</span><span>Paragraphs</span><span>Lists</span><span>Links</span><span>Images</span><span>Semantic HTML</span></div>
+      <div class="example-links"><a href="#">HTML intro</a><a href="#">attributes</a></div>
+    </div>
+  </div>
+
+  <!-- lecture 3 -->
+  <div id="lecture3" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 3: HTML Forms and Media</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Forms, input types, audio, video</h3>
+      <p><strong>Summary</strong> — Building interactive forms, different input types, form validation. Adding audio/video with &lt;audio&gt; and &lt;video&gt; tags.</p>
+      <div><strong>Topics Covered:</strong> </div>
+      <div class="topics-list"><span>form element</span><span>input</span><span>label</span><span>radio/checkbox</span><span>select</span><span>textarea</span><span>video/audio</span><span>embed</span></div>
+    </div>
+  </div>
+
+  <!-- lecture 4 -->
+  <div id="lecture4" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 4: Introduction to CSS</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Styling web pages – syntax, selectors, properties</h3>
+      <p><strong>Summary</strong> — Inline, internal, external CSS. Colors, backgrounds, fonts, units (px, %, em). Basic text styling.</p>
+      <div class="topics-list"><span>CSS syntax</span><span>color</span><span>background</span><span>fonts</span><span>units</span><span>external stylesheets</span></div>
+    </div>
+  </div>
+
+  <!-- lecture 5 -->
+  <div id="lecture5" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 5: CSS Selectors</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Class, ID, element, attribute, pseudo-classes</h3>
+      <p><strong>Summary</strong> — Deep dive into selector types, specificity, and combining selectors. Pseudo-classes :hover, :nth-child, etc.</p>
+      <div class="topics-list"><span>class</span><span>id</span><span>universal</span><span>descendant</span><span>child</span><span>adjacent</span><span>pseudo</span></div>
+    </div>
+  </div>
+
+  <!-- lecture 6 -->
+  <div id="lecture6" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 6: CSS Box Model & Layout</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Margin, border, padding, width/height, display</h3>
+      <p><strong>Summary</strong> — Box model fundamentals, block vs inline, margin collapsing, and introduction to positioning (static, relative, absolute).</p>
+      <div class="topics-list"><span>margin</span><span>padding</span><span>border</span><span>content-box</span><span>display</span><span>position</span></div>
+    </div>
+  </div>
+
+  <!-- lecture 7 -->
+  <div id="lecture7" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 7: Responsive Web Design</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Media queries, fluid layouts, flex/grid basics</h3>
+      <p><strong>Summary</strong> — Making sites mobile-friendly, viewport meta, responsive units (vw/vh), and media queries for breakpoints.</p>
+      <div class="topics-list"><span>@media</span><span>flexbox</span><span>grid</span><span>viewport</span><span>relative units</span></div>
+    </div>
+  </div>
+
+  <!-- lecture 8 -->
+  <div id="lecture8" class="summary-section">
+    <div class="summary-header"><h2>📘 Lecture 8: Introduction to JavaScript</h2><a class="home-btn" href="#">Home</a></div>
+    <div class="summary-card">
+      <h3>Client‑side scripting, syntax, DOM</h3>
+      <p><strong>Summary</strong> — Basic JavaScript: variables, functions, events, and simple DOM manipulation. Adding interactivity to pages.</p>
+      <div class="topics-list"><span>variables</span><span>functions</span><span>events</span><span>DOM</span><span>console</span><span>alert</span></div>
+    </div>
+  </div>
+
+  <!-- additional navigation: Home / Previous Lectures / Next Lecture -->
+  <div class="nav-links" style="margin-top:1.2rem;">
+    <a href="#">Home</a>
+    <a href="#lecture1">Previous Lectures</a>
+    <a href="#lecture2">Next Lecture</a>
+  </div>
+
+  <!-- absolutely no extra boxes: no footer, no screenshot, no figure note, no rights box, no foodpanda, no github -->
+</div>
+<!-- All changes applied: name Bushra Ahmad, reg FA23-BSE-112, no instructor box, no foodpanda, no github, no screenshot line, no figure note, and the "All Rights Reserved" box under the heading has been removed. -->
+</body>
+</html>
