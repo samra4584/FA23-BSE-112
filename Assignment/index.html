@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bushra · CV Studio | Professional CV</title>
+    <!-- Bootstrap 5 + icons + fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- html2pdf export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            transition: all 0.2s ease;
+        }
+        body {
+            background: linear-gradient(135deg, #e6f0fa 0%, #d4e4fc 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 1.5rem;
+        }
+        /* Blue Headings */
+        h1, h2, h3, h4, h5, h6, 
+        .blue-heading, 
+        .section-title-modern {
+            color: #0066cc !important;
+        }
+        .original-badge {
+            background: #0066cc20;
+            color: #003366;
+            font-size: 0.75rem;
+            border-radius: 50px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            border: 1px solid #0066cc40;
+        }
+        .form-card {
+            border-radius: 2rem;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0,102,204,0.2);
+            box-shadow: 0 20px 40px -15px #00336640;
+        }
+        .form-control, .input-group-text {
+            border-radius: 1rem !important;
+            border: 1px solid rgba(0,102,204,0.2);
+            background: rgba(255,255,255,0.9);
+            padding: 0.6rem 1rem;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(0,102,204,0.2);
+            border-color: #0066cc;
+        }
+        .btn-custom {
+            border-radius: 2rem !important;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            border: 1px solid #0066cc;
+            background: white;
+            color: #0066cc;
+        }
+        .btn-custom:hover {
+            background: #0066cc;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -8px #0066cc80;
+        }
+        .btn-dark-custom {
+            background: #0066cc;
+            color: white;
+            border-radius: 2rem;
+            padding: 0.5rem 1.8rem;
+            border: none;
+            box-shadow: 0 8px 16px -8px #0066cc;
+        }
+        .btn-dark-custom:hover {
+            background: #003366;
+            transform: scale(1.02);
+        }
+        .preview-card-modern {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 30px 55px -20px #00336680;
+            border: 1px solid rgba(0,102,204,0.3);
+            overflow: hidden;
+        }
+        /* CV Template - Clean without map */
+        .cv-template-luxury {
+            background: white;
+            padding: 2rem 2rem 1.5rem 2rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .cv-name-new {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #003366, #0066cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+        .cv-title-new {
+            font-size: 1.1rem;
+            color: #0066cc;
+            background: #e6f0ff;
+            display: inline-block;
+            padding: 0.25rem 1.5rem;
+            border-radius: 40px;
+            border: 1px solid #0066cc40;
+        }
+        .contact-modern {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            background: #f0f7ff;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(0,102,204,0.2);
+        }
+        .contact-modern span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #003366;
+        }
+        .contact-modern i {
+            color: #0066cc;
+            width: 1.2rem;
+        }
+        .section-title-modern {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #0066cc !important;
+            border-bottom: 3px solid #0066cc40;
+            padding-bottom: 0.4rem;
+            margin: 1.8rem 0 1.2rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .section-title-modern i {
+            background: #0066cc;
+            color: white;
+            border-radius: 50%;
+            padding: 0.3rem;
+            font-size: 0.9rem;
+            margin-right: 0.6rem;
+        }
+        .edu-card-modern {
+            background: #f5faff;
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            border: 1px solid #cce4ff;
+        }
+        .edu-degree-new {
+            font-weight: 700;
+            color: #003366;
+        }
+        .edu-school-new {
+            color: #0066cc;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .edu-year-new {
+            background: #e6f0ff;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+        .profile-text {
+            color: #2c3e50;
+            padding: 1rem;
+            background: #f8fcff;
+            border-radius: 1rem;
+            border-left: 4px solid #0066cc;
+        }
+        .badge-blue {
+            background: #e6f0ff;
+            color: #0066cc;
+            border: 1px solid #0066cc40;
+        }
+        /* Simple footer */
+        .simple-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #0066cc40;
+            color: #4d6883;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-xl">
+    <!-- header - clean without GitHub link -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 mt-2">
+        <div>
+            <span class="h2 fw-bold" style="color: #003366;">📄 Bushra · CV Studio</span>
+            <span class="original-badge ms-3"><i class="fa-regular fa-pen-to-square me-1" style="color: #0066cc;"></i>professional template</span>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <button class="btn btn-custom me-2" id="exportPdfBtn"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+            <button class="btn btn-dark-custom" id="resetBtn"><i class="fa-solid fa-rotate-right"></i> New</button>
+        </div>
+    </div>
+
+    <!-- main row -->
+    <div class="row g-4">
+        <!-- left form -->
+        <div class="col-lg-5">
+            <div class="card form-card border-0 p-3">
+                <div class="card-header bg-transparent border-0 pt-2">
+                    <h5 class="blue-heading"><i class="fa-regular fa-pen-to-square me-2" style="color: #0066cc;"></i>YOUR DETAILS</h5>
+                </div>
+                <div class="card-body">
+                    <form id="cvForm">
+                        <!-- personal -->
+                        <h6 class="mb-3" style="color: #0066cc;"><i class="fa-regular fa-user me-2"></i>Personal</h6>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold">Full name</label>
+                                <input type="text" class="form-control" id="fullName" value="Bushra Khan">
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-semibold">Job title</label>
+                                <input type="text" class="form-control" id="jobTitle" value="Frontend Developer">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control" id="email" value="bushra@dev.me">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Phone</label>
+                                <input type="text" class="form-control" id="phone" value="+92 333 7654321">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Address</label>
+                                <input type="text" class="form-control" id="address" value="Lahore, Pakistan">
+                            </div>
+                        </div>
+
+                        <!-- education -->
+                        <h6 class="mt-4 mb-3" style="color: #0066cc;"><i class="fa-solid fa-graduation-cap me-2"></i>Education</h6>
+                        <div id="educationContainer">
+                            <div class="edu-entry mb-3">
+                                <div class="row g-2">
+                                    <div class="col-md-5"><input type="text" class="form-control" placeholder="Degree" value="BS Computer Science"></div>
+                                    <div class="col-md-5"><input type="text" class="form-control" placeholder="Institution" value="University of Punjab"></div>
+                                    <div class="col-md-2"><input type="text" class="form-control" placeholder="Year" value="2024"></div>
+                                </div>
+                            </div>
+                            <div class="edu-entry mb-2">
+                                <div class="row g-2">
+                                    <div class="col-md-5"><input type="text" class="form-control" placeholder="Degree" value="Intermediate (F.Sc)"></div>
+                                    <div class="col-md-5"><input type="text" class="form-control" placeholder="Institution" value="Kinnaird College"></div>
+                                    <div class="col-md-2"><input type="text" class="form-control" placeholder="Year" value="2020"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addEduBtn">
+                            <i class="fa-solid fa-plus"></i> add education
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- right preview -->
+        <div class="col-lg-7">
+            <div class="preview-card-modern p-3">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fa-regular fa-eye me-2" style="color: #0066cc;"></i>
+                    <span class="fw-semibold" style="color: #003366;">live preview</span>
+                    <span class="ms-auto small badge badge-blue">clean template</span>
+                </div>
+                <!-- CV preview - no map -->
+                <div id="cvPreview" class="cv-template-luxury">
+                    <!-- dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple footer - no map reference -->
+    <div class="simple-footer">
+        <div class="d-flex justify-content-center gap-3 mt-2">
+            <span class="badge badge-blue"><i class="fa-brands fa-html5"></i> HTML5</span>
+            <span class="badge badge-blue"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+            <span class="badge badge-blue"><i class="fa-brands fa-bootstrap"></i> Bootstrap</span>
+            <span class="badge badge-blue"><i class="fa-brands fa-js"></i> JavaScript</span>
+        </div>
+        <p class="small mt-3 text-secondary">Responsive CV generator · [CLO4]</p>
+    </div>
+</div>
+
+<script>
+// DOM elements
+const fullName = document.getElementById('fullName');
+const jobTitle = document.getElementById('jobTitle');
+const email = document.getElementById('email');
+const phone = document.getElementById('phone');
+const address = document.getElementById('address');
+const educationContainer = document.getElementById('educationContainer');
+const previewDiv = document.getElementById('cvPreview');
+const addEduBtn = document.getElementById('addEduBtn');
+
+// Get education data
+function getEducationArray() {
+    const entries = educationContainer.querySelectorAll('.edu-entry');
+    const eduList = [];
+    entries.forEach(entry => {
+        const inputs = entry.querySelectorAll('input');
+        if (inputs.length >= 3) {
+            eduList.push({
+                degree: inputs[0].value.trim() || 'Degree',
+                institution: inputs[1].value.trim() || 'Institution',
+                year: inputs[2].value.trim() || 'Year'
+            });
+        }
+    });
+    return eduList;
+}
+
+// Render preview - clean without map
+function renderPreview() {
+    const nameVal = fullName.value.trim() || 'Bushra Khan';
+    const titleVal = jobTitle.value.trim() || 'Frontend Developer';
+    const emailVal = email.value.trim() || 'bushra@dev.me';
+    const phoneVal = phone.value.trim() || '+92 333 7654321';
+    const addressVal = address.value.trim() || 'Lahore, Pakistan';
+    const eduList = getEducationArray();
+
+    let eduHtml = '';
+    if (eduList.length === 0) {
+        eduHtml = '<p class="text-secondary fst-italic">No education added</p>';
+    } else {
+        eduList.forEach(edu => {
+            eduHtml += `
+                <div class="edu-card-modern">
+                    <div class="edu-degree-new">${edu.degree}</div>
+                    <div class="edu-school-new">
+                        <i class="fa-solid fa-building"></i> ${edu.institution}
+                    </div>
+                    <div class="edu-year-new">
+                        <i class="fa-regular fa-calendar"></i> ${edu.year}
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    const previewHtml = `
+        <div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="cv-name-new">${nameVal}</div>
+            </div>
+            <div class="cv-title-new mb-3">${titleVal}</div>
+
+            <div class="contact-modern">
+                <span><i class="fa-regular fa-envelope"></i> ${emailVal}</span>
+                <span><i class="fa-solid fa-phone"></i> ${phoneVal}</span>
+                <span><i class="fa-solid fa-location-dot"></i> ${addressVal}</span>
+            </div>
+
+            <div class="section-title-modern">
+                <i class="fa-solid fa-graduation-cap"></i> Education
+            </div>
+            ${eduHtml}
+
+            <div class="section-title-modern">
+                <i class="fa-solid fa-briefcase"></i> Professional Profile
+            </div>
+            <div class="profile-text">
+                <i class="fa-solid fa-quote-left me-1" style="color:#0066cc;"></i> 
+                Frontend developer with expertise in responsive design and modern web technologies. 
+                Passionate about creating clean, user-friendly interfaces.
+            </div>
+        </div>
+    `;
+
+    previewDiv.innerHTML = previewHtml;
+}
+
+// Attach listeners
+function attachLiveListeners() {
+    const allInputs = document.querySelectorAll('#cvForm input');
+    allInputs.forEach(inp => inp.addEventListener('input', renderPreview));
+}
+
+// Add education row
+function addEducationRow(degree = '', institution = '', year = '') {
+    const newEntry = document.createElement('div');
+    newEntry.className = 'edu-entry mb-2';
+    newEntry.innerHTML = `
+        <div class="row g-2">
+            <div class="col-md-5"><input type="text" class="form-control" placeholder="Degree" value="${degree}"></div>
+            <div class="col-md-5"><input type="text" class="form-control" placeholder="Institution" value="${institution}"></div>
+            <div class="col-md-2"><input type="text" class="form-control" placeholder="Year" value="${year}"></div>
+        </div>
+    `;
+    educationContainer.appendChild(newEntry);
+    attachLiveListeners();
+    renderPreview();
+}
+
+// Event listeners
+addEduBtn.addEventListener('click', () => addEducationRow('', '', ''));
+
+document.getElementById('resetBtn').addEventListener('click', function() {
+    fullName.value = 'Bushra Khan';
+    jobTitle.value = 'Frontend Developer';
+    email.value = 'bushra@dev.me';
+    phone.value = '+92 333 7654321';
+    address.value = 'Lahore, Pakistan';
+    educationContainer.innerHTML = `
+        <div class="edu-entry mb-3">
+            <div class="row g-2">
+                <div class="col-md-5"><input type="text" class="form-control" value="BS Computer Science"></div>
+                <div class="col-md-5"><input type="text" class="form-control" value="University of Punjab"></div>
+                <div class="col-md-2"><input type="text" class="form-control" value="2024"></div>
+            </div>
+        </div>
+        <div class="edu-entry mb-2">
+            <div class="row g-2">
+                <div class="col-md-5"><input type="text" class="form-control" value="Intermediate (F.Sc)"></div>
+                <div class="col-md-5"><input type="text" class="form-control" value="Kinnaird College"></div>
+                <div class="col-md-2"><input type="text" class="form-control" value="2020"></div>
+            </div>
+        </div>
+    `;
+    attachLiveListeners();
+    renderPreview();
+});
+
+document.getElementById('exportPdfBtn').addEventListener('click', function() {
+    const element = document.getElementById('cvPreview');
+    const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Bushra_Professional_CV.pdf',
+        image:        { type: 'jpeg', quality: 0.95 },
+        html2canvas:  { scale: 2, letterRendering: true, backgroundColor: '#ffffff' },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+});
+
+// Initial render
+attachLiveListeners();
+renderPreview();
+</script>
+</body>
+</html>
